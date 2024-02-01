@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Swal from "sweetalert2";
+import fileDownload from 'js-file-download';
 
 export default function ViewGroup() {
   const navigate = useNavigate();
@@ -10,7 +11,6 @@ export default function ViewGroup() {
   const [book, addBook] = useState({
     title: "",
     description: "",
-    fileDownload: "",
     pages: 0,
   });
   const [isAddBook, setIsAddBook] = useState(false);
@@ -87,6 +87,17 @@ export default function ViewGroup() {
       reader.readAsDataURL(imageFile);
     }
   };
+  const downloadBook=(bookFileDownloadName)=>{
+    fetch(`https://localhost:7287/api/Books/DownloadFile/${bookFileDownloadName}`, {
+      method: "GET",
+    })
+      .then((res) => res.blob())
+      .then((data) => {
+        console.log(data);
+        fileDownload(data, bookFileDownloadName);
+        getBooks();
+      });
+  }
   const addNewBook = (e) => {
     e.preventDefault();
     const formData = new FormData();
@@ -122,11 +133,11 @@ export default function ViewGroup() {
               text: "You clicked the button!",
               icon: "success",
             });
-
-            getBooks();
+          getBooks();
           }
         }
       });
+
   };
   const handleTitleInput = (e) => {
     addBook({ ...book, title: e.target.value });
@@ -138,7 +149,11 @@ export default function ViewGroup() {
     addBook({ ...book, pages: e.target.value });
   };
   const handleFileDownloadInput = (e) => {
-    addBook({ ...book, fileDownload: e.target.value });
+     if (e.target.files && e.target.files[0]) {
+       let fileDownload = e.target.files[0];
+      console.log(fileDownload);
+        addBook({ ...book, fileDownload: fileDownload  });
+    }
   };
   if (isAddBook === false) {
     return (
@@ -180,9 +195,10 @@ export default function ViewGroup() {
               />
             </div>
           </div>
+          <br></br>
           <div className="row">
             <div className="col-12 mb-3 mb-lg-5">
-              <div className="overflow-hidden card table-nowrap table-card">
+              <div className={query? ("overflow-hidden card table-nowrap table-card"):  books ? (books.length > 10? "overflow-hidden card table-nowrap table-card h-50": "overflow-hidden card table-nowrap table-card" ): null}>
                 <div className="card-header d-flex justify-content-between align-items-center">
                   <h5 className="mb-0">Book list</h5>
                 </div>
@@ -268,7 +284,7 @@ export default function ViewGroup() {
                                       <button
                                         className="dropdown-item"
                                         onClick={() =>
-                                          navigate("/librarianPage/edit", {
+                                          navigate("/teacherPage/edit", {
                                             state: {
                                               userData: data,
                                               bookId: book.id,
@@ -289,6 +305,14 @@ export default function ViewGroup() {
                                         Delete
                                       </button>
                                     </li>
+                                    <li>
+                                      <button
+                                        className="dropdown-item"
+                                        onClick={() => downloadBook(book.fileName)}
+                                      >
+                                       Download
+                                      </button>
+                                    </li>
                                   </ul>
                                 </div>
                               </td>
@@ -299,7 +323,7 @@ export default function ViewGroup() {
                           <div className="spinner-border" role="status">
                             <span className="visually-hidden">Loading...</span>
                           </div>
-                        </div>
+                        </div>  
                       )}
                     </tbody>
                   </table>
@@ -386,7 +410,7 @@ export default function ViewGroup() {
                   <input
                     defaultValue={book.fileDownload}
                     name="fileDownload"
-                    type="text"
+                    type="file"
                     id="fileDownload"
                     className="form-control form-control-lg"
                     onChange={handleFileDownloadInput}

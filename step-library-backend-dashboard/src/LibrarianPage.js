@@ -188,14 +188,15 @@ export default function LibrarianPage() {
             />
           </div>
         </div>
-        <div className="row">
-          <div className="col-12 mb-3 mb-lg-5">
-            <div className="overflow-hidden card table-nowrap table-card">
+        <br></br>
+        <div className="row ">
+          <div className="col-12 mb-3 mb-lg-5">          
+            <div className={query? ("card table-nowrap table-card"): users.length > 10?('card table-nowrap table-card h-50'):("card table-nowrap table-card") }>
               <div className="card-header d-flex justify-content-between align-items-center">
                 <h5 className="mb-0">User list</h5>
               </div>
-              <div className="table-responsive">
-                <table className="table mb-0">
+              <div className="table-responsive" >
+                <table className="table mb-0 table-striped" >
                   <thead className="small text-uppercase bg-body text-muted">
                     <tr>
                       <th>Id</th>
@@ -222,7 +223,7 @@ export default function LibrarianPage() {
                               src={`https://localhost:7287/images/userprofiles/${user.imagePath}`}
                               className="rounded-circle "
                               alt="Customer"
-                              style={{ width: "158px", height: "158px" }}
+                              style={{ width: "80px", height: "80px" }}
                             ></img>
                           </td>
 

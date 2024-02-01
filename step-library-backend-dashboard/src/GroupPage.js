@@ -11,6 +11,7 @@ export default function GroupPage() {
   const [teachers, setTeachers] = useState([]);
   const [isCreateStudentGroupPage, setIsCreateStudentGroupPage] =
     useState(false);
+   const [query, setQuery] = useState("");
   useEffect(() => {
     refreshData();
   }, []);
@@ -70,7 +71,7 @@ export default function GroupPage() {
             title: "Oops...",
             text: data.message,
           });
-        } else if(data.status === "success") {
+        } else if(data.id > 0) {
           Swal.fire({
             title: "Group has been created successfully!",
             text: "You clicked the button!",
@@ -133,6 +134,18 @@ export default function GroupPage() {
         console.log(data.token);
       });
   };
+  const handleSearch = (event) => {
+    setQuery(event.target.value);
+    var groupsFound = groups.filter((group) => group.name === event.target.value);
+    if (groupsFound.length === 0)
+      groupsFound = groups.filter(
+        (group) =>
+          group.name.toLowerCase().charAt(0) ===
+          event.target.value.toLowerCase().charAt(0)
+      );
+    if (groupsFound.length > 0) setGroups(groupsFound);
+    else refreshData();
+  };
   if (isCreateStudentGroupPage !== true) {
     return (
       <div>
@@ -146,9 +159,29 @@ export default function GroupPage() {
           </button>
         </div>
         <div className="container">
+        <div
+            className="input-group d-flex justify-content-between"
+            style={{ marginRight: "10px" }}
+          >
+             <div className="text-success">Total groups: {groups? groups.length: 'waiting'}</div> 
+            <div className="form-outline" data-mdb-input-init>
+              <label className="form-label" htmlFor="form1">
+                Search by group name
+              </label>
+              <input
+                type="search"
+                className="form-control"
+                id="query"
+                name="query"
+                value={query}
+                onChange={handleSearch}
+              />
+            </div>
+          </div>
+          <br></br>
           <div className="row">
             <div className="col-12 mb-3 mb-lg-5">
-              <div className="overflow-hidden card table-nowrap table-card">
+              <div className={query? ("overflow-hidden card table-nowrap table-card"): groups.length > 10?("overflow-hidden card table-nowrap table-card h-50"):("overflow-hidden card table-nowrap table-card")}>
                 <div className="card-header d-flex justify-content-between align-items-center">
                   <h5 className="mb-0">Student Group list</h5>
                 </div>
@@ -165,16 +198,16 @@ export default function GroupPage() {
                     <tbody>
                       {groups ? (
                         groups.map((group) => (
-                          <tr className="align-middle" key={group.id}>
+                          <tr className="align-middle" key={group.id}>                            
                             <td>
-                              <div className="d-flex align-items-center">
+                              <div className="d-flex align-items-center justify-content-center">
                                 <div>
                                   <div className="h6 mb-0 lh-1">{group.id}</div>
                                 </div>
                               </div>
                             </td>
                             <td>
-                              <div className="d-flex align-items-center">
+                              <div className="d-flex align-items-center  justify-content-center">
                                 <div>
                                   <div className="h6 mb-0 lh-1">
                                     {group.name}
@@ -183,7 +216,7 @@ export default function GroupPage() {
                               </div>
                             </td>
                             <td>
-                              <div className="d-flex align-items-center">
+                              <div className="d-flex align-items-center  justify-content-center">
                                 <div>
                                   <div className="h6 mb-0 lh-1">
                                     {group.userId}
@@ -264,7 +297,6 @@ export default function GroupPage() {
             <div className="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
               <form
                 className="d-flex flex-column justify-content-center"
-                // onSubmit={register}
               >
                 <div className="form-outline mb-4 ">
                   <label className="form-label" htmlFor="name">

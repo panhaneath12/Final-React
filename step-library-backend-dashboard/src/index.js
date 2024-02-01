@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
+
 import reportWebVitals from './reportWebVitals';
-// import LoginPage from './LoginPage';
 import RegisterPage from './RegisterPage';
 import LibrarianPage from './LibrarianPage';
 import TeacherPage from './TeacherPage';
@@ -14,23 +14,7 @@ import ViewGroup from './ViewGroup';
 import App from './App';
 import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } from 'react-router-dom';
 import LoginPage from './LoginPage';
-// const router = createBrowserRouter([
-//   {path: '/', element: <LoginPage></LoginPage> },
-//   //librarain
-//   {path: '/librarianPage', element: <LibrarianPage></LibrarianPage>},
-//   {path: '/librarianPage/profile', element: <Profile></Profile>},
-//   {path: '/librarianPage/register', element: <RegisterPage></RegisterPage>},
-//   {path: '/librarianPage/edit', element: <EditPage></EditPage>},  
-//   {path: '/librarianPage/viewDetail', element: <ViewDetail></ViewDetail>},
-//   {path: '/librarianPage/group', element: <GroupPage></GroupPage>},
 
-//   //teacher
-//   {path: '/teacherPage', element: <TeacherPage></TeacherPage>}, 
-//   {path: '/teacherPage/profile', element: <Profile></Profile>}, 
-//   {path: '/teacherPage/viewGroup', element: <ViewGroup></ViewGroup>}, 
-
-
-// ])
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
@@ -48,6 +32,7 @@ const router = createBrowserRouter(
       {/* teacher */}
       <Route path='teacherPage' element={ <TeacherPage></TeacherPage>} />
       <Route path='teacherPage/profile' element={<Profile></Profile>} />
+      <Route path='teacherPage/edit' element={<EditPage></EditPage>} />
       <Route path='teacherPage/viewGroup' element={<ViewGroup></ViewGroup>} />
     </Route>
     

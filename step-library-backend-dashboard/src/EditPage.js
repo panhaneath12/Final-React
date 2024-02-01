@@ -162,14 +162,21 @@ export default function EditPage() {
     setBook({ ...book, pages: e.target.value });
   };
   const handleFileDownloadInput = (e) => {
-    setBook({ ...book, fileDownload: e.target.value });
+    if (e.target.files && e.target.files[0]) {
+      let fileDownload = e.target.files[0];
+     console.log(fileDownload);
+     setBook({ ...book, fileDownload: fileDownload});
+   }
   };
   //for teacher editing book teacher token
   const editBook = (e) => {
     e.preventDefault();
+
     const formData = new FormData();
     formData.append("id", book.id);
     formData.append("title", book.title);
+    formData.append("fileName", book.fileName);
+    formData.append("imagePath", book.imagePath);
     formData.append("imageFile", book.imageFile);
     formData.append("fileDownload", book.fileDownload);
     formData.append("description", book.description);
@@ -344,21 +351,19 @@ export default function EditPage() {
   } else if (isEditStudentGroup === true) {
     return (
       <div>
-        <button
-          type="submit"
-          className="btn btn-danger btn-lg btn-block"
-          onClick={() =>
-            navigate("/librarianPage/group", { state: { userData: data } })
-          }
-        >
-          back to student group
-        </button>
+        <div className="d-flex m-10 justify-content-end">
+          <button
+            type="submit"
+            className="btn btn-danger btn-lg btn-block"
+            onClick={() =>
+              navigate("/librarianPage/group", { state: { userData: data } })
+            }
+          >
+            back to student group
+          </button>
+        </div>
         <div className="container-xl px-4 mt-4">
-          <hr className="mt-0 mb-4"></hr>
           <div className="row">
-            <div className="col-xl-4">
-              <div className="card mb-4 mb-xl-0"></div>
-            </div>
             <div className="col-xl-8">
               <div className="card mb-4">
                 <div className="card-header">Student Group Details</div>
@@ -427,7 +432,10 @@ export default function EditPage() {
       </div>
     );
   } else if (isEditStudentGroup === null) {
+     console.log('nulll');
+
     return (
+      
       <div>
         <button
           type="submit"
@@ -490,7 +498,7 @@ export default function EditPage() {
                         </label>
 
                         <input
-                          value={book.title}
+                          defaultValue={book.title}
                           name="title"
                           type="text"
                           id="title"
@@ -516,9 +524,9 @@ export default function EditPage() {
                           File download
                         </label>
                         <input
-                          defaultValue={book.fileDownload}
+                          title="Click here to change old file to new file"
                           name="fileDownload"
-                          type="text"
+                          type="file"
                           id="fileDownload"
                           className="form-control form-control-lg"
                           onChange={handleFileDownloadInput}

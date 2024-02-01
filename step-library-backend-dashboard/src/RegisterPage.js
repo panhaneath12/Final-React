@@ -1,9 +1,7 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import Swal from "sweetalert2";
 export default function RegisterPage() {
-  const navigate = useNavigate();
   const data = useLocation().state.userData;
   const [user, addUser] = useState({
     username: "",

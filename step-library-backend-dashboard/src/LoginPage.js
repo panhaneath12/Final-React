@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
-import {  useNavigate, useLocation } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import Cookies from 'js-cookie';
+import Swal from "sweetalert2";
+
 export default function LoginPage() {
   const navigate = useNavigate();
   const [user, setUser] = useState({username: '', password: ''});
@@ -34,6 +36,7 @@ export default function LoginPage() {
     e.preventDefault();
     console.log(user.username)
     console.log(user.password)
+    if(user.username.length > 0 && user.password.length === 6){
     fetch(`https://localhost:7287/api/Users/${user.username}/${user.password}`)
       .then((res) => res.json())
       .then((data) => {
@@ -52,6 +55,13 @@ export default function LoginPage() {
         }
         console.log(data.token);
       });
+    }else{
+      Swal.fire({
+        title: "Check your username and password again",
+        text: "invalid fields",
+        icon: "info",
+      });
+    }
   };
   
   const handleUsernameInput=(e)=>{
@@ -111,18 +121,6 @@ export default function LoginPage() {
              {userStatus !== '' && <span className = "text-danger">{userStatus}</span>}
               <div className="text-danger"></div>
               <div className="d-flex justify-content-around align-items-center mb-4">
-                <div className="form-check">
-                  <input
-                    className="form-check-input"
-                    type="checkbox"
-                    value=""
-                    id="form1Example3"
-                  />
-                  <label className="form-check-label" htmlFor="form1Example3">
-                    {" "}
-                    Remember me{" "}
-                  </label>
-                </div>
               </div>
 
               <button

@@ -11,7 +11,7 @@
 body {
   overflow: hidden;
   padding: 0 20px;
-  background: #17a2b8;
+  background: gray;
 }
 
 ::selection {
@@ -127,3 +127,4 @@ section .content .title {
 section .content p {
   text-align: justify;
 }
+

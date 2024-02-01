@@ -66,11 +66,7 @@ export default function TeacherPage() {
           <span className="badge bg-primary rounded-pill">
             
             {books && groups ?  (                                                                                                                                                                                                                                         
-              // books
-              //   .filter((book) => 
-              //    groups.map((group)=> book.groupId === group.id)                 
-              //   )
-              //   .map((book) => book).length
+
                 books.filter((book) => {
                   return groups.map((group) => book.groupId === group.id).includes(true)
                 }).length
@@ -130,14 +126,14 @@ export default function TeacherPage() {
               <div className="card">
                 <div className="card-body d-flex justify-content-between">
                   <div className="d-flex align-items-center">
-                    <div className="ms-3">
-                      <p className="text-muted mb-0">{group.id}</p>
+                    <div className="ms-3 " id="Text" >
+                      <p className=" mb-0">{group.id}</p>
                       <p className="fw-bold mb-1">Group name</p>
-                      <p className="text-muted mb-0">{group.name}</p>
+                      <p className=" mb-0">{group.name}</p>
                     </div>
                   </div>
                   <button
-                    className="btn btn-success"
+                    className="btn btn-success" 
                     onClick={() =>
                       navigate("/teacherPage/viewGroup", {
                         state: { data: teacher, group: group },

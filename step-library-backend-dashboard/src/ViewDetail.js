@@ -65,9 +65,7 @@ export default function ViewDetail() {
                       <li className="list-group-item d-flex justify-content-between align-items-start">
                         <div className="ms-2 me-auto">
                           <div className="fw-bold">{group.name}</div>
-                          Content for list item
                         </div>
-                        <span className="badge bg-primary rounded-pill">0</span>
                       </li>
                     </ol>
                   );
